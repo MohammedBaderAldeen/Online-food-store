@@ -1,0 +1,131 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+
+@if(Model.Coupons.Count()>0)
+{
+    <div class="border row">
+        <div class="carousel" data-ride="carousel" data-interval="2500">
+            @for(int i = 0; i < Model.Coupons.Count(); i++)
+            {
+                var base64 = Convert.ToBase64String(Model.Coupons.ToList()[i].Picture);
+                var imgsrc = String.Format("data:image/jpeg;base64,{0}", base64);
+
+                    if (i == 0)
+                    {
+                        <div class="carousel-item active">
+                            <img src="@imgsrc" height="50" class="d-block w-100" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <img src="@imgsrc" height="50" class="d-block w-100" />
+                        </div>
+                    }
+            }
+        </div>
+    </div>
+}
+
+<br />
+<br />
+<div class="whiteBackground container" >
+
+    <ul id="menu-filter" class="menu-filter-list list-inline text-center">
+        <li class="active btn btn-secondary ml-1 mr-1" data-filter=".AllCategories">Show All</li>
+
+        @foreach (var Category in Model.Categories)
+        {
+            <li class="ml-1 mr-1" data-filter=".@Category.Name.Replace(" ",String.Empty)">@Category.Name</li>
+        }
+    </ul>
+
+    @foreach (var Category in Model.Categories)
+    {
+        var menuItems = Model.MenuItems.Where(m => m.Category.Name.Equals(Category.Name));
+
+<div class="row">
+    @if (menuItems.Count() > 0)
+    {
+        <div class="col-12 @Category.Name.Replace(" ",String.Empty) AllCategories">
+            <div class="row">
+                <h3 class="text-success">
+                    @Category.Name
+                </h3>
+            </div>
+            @foreach (var item in menuItems)
+            {
+                <div class="border border-info rounded col-12" style="margin-top:10px; margin-bottom:10px; padding:10px;">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-12">
+                            <img src="@item.Image" width="99%" style="border-radius:5px; border:1px solid #bbb9b9" />
+                        </div>
+
+                        <div class="col-md-9 col-sm-12">
+                            <div class="row pr-3">
+                                <div class="col-8">
+                                    <label class="text-primary" style="font:21px;">
+                                        @item.Name
+                                    </label>
+                                    @if (item.Spicyness == "1")
+                                    {
+                                        <img src="~/img/green.jpg" width="99" title="mild" />
+                                    }
+                                    else if (item.Spicyness == "2")
+                                    {
+                                        <img src="~/img/yellow.jpg" width="99" title="spicy" />
+                                    }
+                                    else if (item.Spicyness == "3")
+                                    {
+                                        <img src="~/img/red.jpg" width="99" title="very spicy" />
+                                    }
+                                </div>
+                                <div class="col-4 text-right" style="color:maroon">
+                                    <h4>
+                                        $ @item.Price
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row col-12 text-justify d-none d-md-block">
+                                <p>@Html.Raw(item.Description)</p>
+                            </div>
+                            <div class="col-md-3 col-sm-12 offset-md-9 text-right">
+                                <!-- itemid:menuItem and shoppingCartبين كلاسين id من اجل عدم تعارض اسماء   -->
+                                <a asp-action="Details" class="btn btn-success form-control" asp-route-itemId="@item.id">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="p-4"></div>
+    }
+</div>
+    }
+</div>
+
+@section Scripts{ 
+
+<script>
+    $(document).ready(
+        function ($) {
+            $("#menu-filter li").click(
+                function () {
+                    $("#menu-filter li").removeClass("active btn btn-secondary")
+                    $(this).addClass("active btn btn-secondary");
+                    var selectedFilter = $(this).data("filter");
+                    $(".AllCategories").fadeOut();
+                    setTimeout(function () {
+                        $(selectedFilter).slideDown();
+                    }, 300);
+                }
+            )
+        }
+    );
+</script>
+}

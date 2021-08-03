@@ -1,0 +1,48 @@
+﻿@model String
+
+<div style="width:100%">
+    @if (Model == SD.StatusSubmited)
+    {
+        <div class="row d-flex justify-content-center">
+            <div class="col-5 offset-2">
+                <img src="~/img/place-order.jpg" width="40%" />
+            </div>
+            <div class="col-4">
+                <h4 class="text-info mt-5">Order Place</h4>
+            </div>
+        </div>
+    }
+    @if (Model == SD.StatusIsProcess)
+    {
+        <div class="row d-flex justify-content-center">
+            <div class="col-5 offset-2">
+                <img src="~/img/in-kitchen.png" width="40%"/>
+            </div>
+            <div class="col-4">
+                <h4 class="text-info mt-5">IN Kitchen</h4>
+            </div>
+        </div>
+    }
+    @if (Model == SD.StatusReady)
+    {
+        <div class="row d-flex justify-content-center">
+            <div class="col-5 offset-2">
+                <img src="~/img/ready-for-pickup.jpg" width="40%" />
+            </div>
+            <div class="col-4">
+                <h4 class="text-info mt-5">Ready To Pickup</h4>
+            </div>
+        </div>
+    }
+    @if (Model == SD.StatusCompleted)
+    {
+        <div class="row d-flex justify-content-center">
+            <div class="col-5 offset-2">
+                <img src="~/img/complete.jpg" width="40%" />
+            </div>
+            <div class="col-4">
+                <h4 class="text-info mt-5">Complete</h4>
+            </div>
+        </div>
+    }
+</div>
